@@ -7,13 +7,11 @@ class ShowCounter extends Component {
 
 
   addCount = () => {
-    const { step } = this.props;
-    this.setState(state => ({ count: state.count + step }));
+    this.setState((state,props) => ({ count: state.count + props.step }));
   }
 
   subCount = () => {
-    const { step } = this.props;
-    this.setState(state => ({ count: state.count - step }));
+    this.setState((state,props) => ({ count: state.count - props.step }));
   }
 
   changeOperation = () => {
