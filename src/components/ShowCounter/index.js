@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
+import styles from './ShowCounter.module.css'
+
 class ShowCounter extends Component {
   constructor(props) {
     super(props);
-    this.state = { count: 0, addition: true };
+    this.state = { total: 0, addition: true, startedTimer: false };
   }
 
 
-  addCount = () => {
-    this.setState((state,props) => ({ count: state.count + props.step }));
+  addTotal = () => {
+    this.setState((state, props) => ({ total: state.total + props.step }));
   }
 
-  subCount = () => {
-    this.setState((state,props) => ({ count: state.count - props.step }));
+  subTotal = () => {
+    this.setState((state, props) => ({ total: state.total - props.step }));
   }
 
   changeOperation = () => {
@@ -20,19 +22,40 @@ class ShowCounter extends Component {
 
   calc = () => {
     const { addition } = this.state;
-    addition ? this.addCount() : this.subCount();
+    addition ? this.addTotal() : this.subTotal();
   }
 
+  startTimer = () => {
+    const intervalId = setInterval(this.timer, 1000);
+    this.setState({ intervalId: intervalId, startedTimer: true });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
+  }
+
+  timer = () => {
+    const { timer, updateTimer } = this.props;
+    if (timer > 0) {
+      this.calc();
+      updateTimer();
+    } else {
+      this.setState({ startedTimer: false });
+      clearInterval(this.state.intervalId);
+    }
+  }
   render() {
     const { step } = this.props;
-    const { count, addition } = this.state;
+    const { total, addition, startedTimer } = this.state;
 
     return (
-      <section>
-        <h1>count:{count}</h1>
+      <section className={styles.section}>
+        <h1>total:{total}</h1>
         <h2>step:{step}</h2>
         <button onClick={this.calc}>{addition ? '+' : '-'}</button>
         <button onClick={this.changeOperation}>change</button>
+        <button onClick={this.startTimer} disabled={startedTimer}>start</button>
+
       </section>
     )
   }

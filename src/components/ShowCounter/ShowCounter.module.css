@@ -1,0 +1,9 @@
+.section{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25vw;
+  margin: auto;
+  border: 3px solid blue;
+}
